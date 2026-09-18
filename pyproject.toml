@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "license-plate-recognition"
+version = "0.1.0"
+description = "A tool for License Plate Recognition"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "SQLAlchemy>=2.0.53",
+    "PyMySQL>=1.2.0",
+    "python-dotenv>=1.2.3",
+    "opencv-python>=5.0.0.93",
+    "ultralytics>=8.4.150",
+    "paddleocr>=3.7.0",
+    "paddlepaddle>=3.3.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
