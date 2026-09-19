@@ -5,7 +5,7 @@ import time
 from ..camera.video_stream import VideoStream
 from ..config import Config
 from ..detector.detector import PlateDetector
-from ..lpr.lpr import LPR
+from ..ocr.ocr import OCR
 from ..storage.image_storage import ImageStorage
 
 logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ class GateRunner:
 
         self.detector = PlateDetector()
 
-        self.lpr = LPR()
+        self.ocr = OCR()
 
         self.image_storage = ImageStorage()
 
@@ -96,7 +96,7 @@ class GateRunner:
             try:
                 x1, y1, x2, y2 = detection["bbox"]
                 plate_crop = frame[y1:y2, x1:x2]
-                result = self.lpr.recognize(plate_crop)
+                result = self.ocr.recognize(plate_crop)
 
                 if not result:
                     continue

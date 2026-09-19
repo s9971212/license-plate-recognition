@@ -7,7 +7,7 @@ from ..config import Config
 logger = logging.getLogger(__name__)
 
 
-class LPR:
+class OCR:
 
     def __init__(self):
 

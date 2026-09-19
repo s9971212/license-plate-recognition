@@ -104,7 +104,7 @@ class Application:
         # =========================
 
         if Config.DEBUG:
-            logger.info("DEBUG 模式：使用測試 Branch")
+            logger.info("DEBUG 模式: 使用測試 Branch")
 
             return SimpleNamespace(
                 branch_id="00",
@@ -137,7 +137,7 @@ class Application:
         # =========================
 
         if Config.DEBUG:
-            logger.info("DEBUG 模式：使用測試 Gate")
+            logger.info("DEBUG 模式: 使用測試 Gate")
 
             return [
                 SimpleNamespace(
