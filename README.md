@@ -88,7 +88,7 @@ pip install -e .
 
 <br/>**Create .env file**
 
-Here is how you can copy .env.example to create a new .env on your computer:
+Here is how you can copy .env.example to create a new .env on your machine:
 
 macOS / Linux
 ```bash
