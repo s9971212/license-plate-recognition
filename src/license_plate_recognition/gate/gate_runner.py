@@ -1,5 +1,6 @@
 import logging
 import re
+import threading
 import time
 
 from ..camera.video_stream import VideoStream
@@ -36,10 +37,26 @@ class GateRunner:
 
         self.image_storage = ImageStorage()
 
+        # =========================
+        # Threads
+        # =========================
+
+        self.stop_event = threading.Event()
+
     def run(self):
         """
         啟動 Gate Runner
         """
+
+        if self.stop_event.is_set():
+            logger.warning(
+                "Gate Runner 已經啟動: %s - %s",
+                self.gate.gate_id,
+                self.gate.gate_name,
+            )
+            return
+
+        self.stop_event.set()
 
         try:
             self.camera.run()
@@ -50,7 +67,7 @@ class GateRunner:
                 self.gate.gate_name,
             )
 
-            while True:
+            while self.stop_event.is_set():
                 start = time.monotonic()
 
                 try:
@@ -70,7 +87,7 @@ class GateRunner:
                 remaining = Config.FRAME_INTERVAL - elapsed
 
                 if remaining > 0:
-                    time.sleep(remaining)
+                    self.stop_event.wait(remaining)
 
         except Exception:
             logger.exception(
@@ -80,6 +97,24 @@ class GateRunner:
             )
 
             raise
+
+        finally:
+            self.camera.release()
+
+    def release(self):
+        """
+        停止 Gate Runner
+        """
+
+        self.stop_event.clear()
+
+        self.camera.release()
+
+        logger.info(
+            "Gate Runner 已停止: %s - %s",
+            self.gate.gate_id,
+            self.gate.gate_name,
+        )
 
     # =========================================================
     # Frame

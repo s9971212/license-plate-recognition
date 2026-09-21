@@ -34,6 +34,8 @@ class Application:
         # Threads
         # =========================
 
+        self.runners = []
+
         self.threads = []
 
     def run(self):
@@ -82,11 +84,13 @@ class Application:
         Application 結束時清理資源
         """
 
-        try:
-            self.db.dispose()
+        for runner in self.runners:
+            runner.release()
 
-        except Exception:
-            logger.exception("關閉 Database 時發生錯誤")
+        for thread in self.threads:
+            thread.join(timeout=5)
+
+        self.db.dispose()
 
         logger.info("Application 已停止")
 
@@ -181,9 +185,10 @@ class Application:
                 daemon=True,
             )
 
-            thread.start()
-
+            self.runners.append(runner)
             self.threads.append(thread)
+
+            thread.start()
 
             logger.info(
                 "啟動 Gate: %s - %s",

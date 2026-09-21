@@ -52,7 +52,7 @@ class Config:
     # Reconnect Interval
     # =========================
 
-    RECONNECT_INTERVAL = int(os.getenv("RECONNECT_INTERVAL", "5"))
+    RECONNECT_INTERVAL = float(os.getenv("RECONNECT_INTERVAL", "5.0"))
 
     # =========================
     # Frame Interval

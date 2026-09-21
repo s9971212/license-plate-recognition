@@ -1,6 +1,5 @@
 import logging
 import threading
-import time
 
 import cv2
 
@@ -28,8 +27,6 @@ class VideoStream:
 
         self.stream_url = f"rtsp://{gate.ip}/stream1"
 
-        self.running = False
-
         self.cap = None
 
         self.frame = None
@@ -40,6 +37,8 @@ class VideoStream:
 
         self.thread = None
 
+        self.stop_event = threading.Event()
+
         self.lock = threading.Lock()
 
     def run(self):
@@ -47,7 +46,7 @@ class VideoStream:
         啟動 Video Stream
         """
 
-        if self.running:
+        if self.stop_event.is_set():
             logger.warning(
                 "Video Stream 已經啟動: %s - %s",
                 self.gate.gate_id,
@@ -55,7 +54,7 @@ class VideoStream:
             )
             return
 
-        self.running = True
+        self.stop_event.set()
 
         self.thread = threading.Thread(
             target=self._update,
@@ -76,7 +75,7 @@ class VideoStream:
         停止 Video Stream
         """
 
-        self.running = False
+        self.stop_event.clear()
 
         current_thread = threading.current_thread()
 
@@ -87,6 +86,11 @@ class VideoStream:
             self.thread.join(timeout=2)
 
         self.thread = None
+
+        self._release_capture()
+
+        with self.lock:
+            self.frame = None
 
         logger.info(
             "Video Stream 已停止: %s - %s",
@@ -105,7 +109,7 @@ class VideoStream:
         """
 
         try:
-            while self.running:
+            while self.stop_event.is_set():
                 if self.cap is None:
                     connected = self.connect()
 
@@ -132,7 +136,9 @@ class VideoStream:
 
         finally:
             self._release_capture()
-            self.frame = None
+
+            with self.lock:
+                self.frame = None
 
     # =========================================================
     # Connection
@@ -181,11 +187,9 @@ class VideoStream:
         等待下一次重新連線
         """
 
-        for _ in range(Config.RECONNECT_INTERVAL):
-            if not self.running:
-                return
-
-            time.sleep(1)
+        self.stop_event.wait(
+            timeout=Config.RECONNECT_INTERVAL
+        )
 
     # =========================================================
     # Capture
