@@ -2,7 +2,7 @@ import logging
 
 from paddleocr import PaddleOCR
 
-from ..config import Config
+from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -16,8 +16,8 @@ class OCR:
         # =========================
 
         self.ocr = PaddleOCR(
-            text_detection_model_name=Config.OCR_DETECTION_MODEL,
-            text_recognition_model_name=Config.OCR_RECOGNITION_MODEL,
+            text_detection_model_name=settings.ocr_detection_model,
+            text_recognition_model_name=settings.ocr_recognition_model,
             use_doc_orientation_classify=False,
             use_doc_unwarping=False,
             use_textline_orientation=False,

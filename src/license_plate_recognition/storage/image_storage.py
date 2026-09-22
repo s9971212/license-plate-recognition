@@ -3,7 +3,7 @@ from pathlib import Path
 
 import cv2
 
-from ..config import Config
+from ..config import settings
 
 
 class ImageStorage:
@@ -19,7 +19,7 @@ class ImageStorage:
 
         self.base_dir = (
                 base_dir
-                or Config.RECOGNITION_IMAGE_DIR
+                or settings.recognition_image_dir
         )
 
     def save(

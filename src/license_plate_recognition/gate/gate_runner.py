@@ -4,7 +4,7 @@ import threading
 import time
 
 from ..camera.video_stream import VideoStream
-from ..config import Config
+from ..config import settings
 from ..detector.detector import PlateDetector
 from ..ocr.ocr import OCR
 from ..storage.image_storage import ImageStorage
@@ -84,7 +84,7 @@ class GateRunner:
                     )
 
                 elapsed = time.monotonic() - start
-                remaining = Config.FRAME_INTERVAL - elapsed
+                remaining = settings.frame_interval - elapsed
 
                 if remaining > 0:
                     self.stop_event.wait(remaining)

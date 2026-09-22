@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-from ..config import Config
+from ..config import settings
 
 
 class PlateDetector:
@@ -22,9 +22,9 @@ class PlateDetector:
         # Model
         # =========================
 
-        self.vehicle_model = YOLO(Config.YOLO_MODEL_PATH)
+        self.vehicle_model = YOLO(settings.yolo_model_path)
 
-        self.plate_model = YOLO(Config.LICENSE_PLATE_MODEL_PATH)
+        self.plate_model = YOLO(settings.license_plate_model_path)
 
     def detect(self, image):
         """
@@ -73,7 +73,7 @@ class PlateDetector:
         results = self.vehicle_model(
             image,
             classes=list(self.VEHICLE_CLASSES),
-            conf=Config.VEHICLE_CONFIDENCE,
+            conf=settings.vehicle_confidence,
             verbose=False,
         )
 

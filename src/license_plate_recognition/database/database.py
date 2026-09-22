@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-from ..config import Config
+from ..config import settings
 
 
 class Base(DeclarativeBase):
@@ -18,11 +18,11 @@ class Database:
 
         connection_url = URL.create(
             "mysql+pymysql",
-            username=Config.DB_USER,
-            password=Config.DB_PASSWORD,
-            host=Config.DB_HOST,
-            port=Config.DB_PORT,
-            database=Config.DB_NAME,
+            username=settings.db_user,
+            password=settings.db_password,
+            host=settings.db_host,
+            port=settings.db_port,
+            database=settings.db_name,
         )
 
         # =========================

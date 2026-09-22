@@ -2,7 +2,7 @@ import logging
 import threading
 from types import SimpleNamespace
 
-from .config import Config
+from .config import settings
 from .database.database import Database
 from .database.repository import BranchRepository, GateRepository
 from .gate.gate_runner import GateRunner
@@ -19,7 +19,7 @@ class Application:
         # Logging
         # =========================
 
-        setup_logging(Config.LOG_PATH)
+        setup_logging(settings.log_path)
 
         # =========================
         # Components
@@ -107,7 +107,7 @@ class Application:
         # DEBUG
         # =========================
 
-        if Config.DEBUG:
+        if settings.debug:
             logger.info("DEBUG 模式: 使用測試 Branch")
 
             return SimpleNamespace(
@@ -119,13 +119,13 @@ class Application:
         # Production
         # =========================
 
-        if not Config.BRANCH_ID:
+        if not settings.branch_id:
             raise ValueError("BRANCH_ID 未設定")
 
         with self.db.get_session() as session:
             repo = BranchRepository(session)
 
-            return repo.get_by_id(Config.BRANCH_ID)
+            return repo.get_by_id(settings.branch_id)
 
     # =========================================================
     # Gate
@@ -140,7 +140,7 @@ class Application:
         # DEBUG
         # =========================
 
-        if Config.DEBUG:
+        if settings.debug:
             logger.info("DEBUG 模式: 使用測試 Gate")
 
             return [
@@ -155,15 +155,15 @@ class Application:
         # Production
         # =========================
 
-        if not Config.GATES:
+        if not settings.gates:
             raise ValueError("GATES 未設定")
 
         with self.db.get_session() as session:
             repo = GateRepository(session)
 
             return repo.get_by_branch_id_and_gate_ids(
-                branch_id=Config.BRANCH_ID,
-                gate_ids=Config.GATES,
+                branch_id=settings.branch_id,
+                gate_ids=settings.gates,
             )
 
     # =========================================================

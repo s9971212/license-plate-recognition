@@ -3,7 +3,7 @@ import threading
 
 import cv2
 
-from ..config import Config
+from ..config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -188,7 +188,7 @@ class VideoStream:
         """
 
         self.stop_event.wait(
-            timeout=Config.RECONNECT_INTERVAL
+            timeout=settings.reconnect_interval
         )
 
     # =========================================================
