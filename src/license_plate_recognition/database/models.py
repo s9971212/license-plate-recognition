@@ -30,12 +30,12 @@ class Branch(Base):
         nullable=False,
     )
 
-    updated_user: Mapped[str] = mapped_column(
+    updated_user: Mapped[str | None] = mapped_column(
         String(12),
         nullable=True,
     )
 
-    updated_date: Mapped[datetime] = mapped_column(
+    updated_date: Mapped[datetime | None] = mapped_column(
         nullable=True,
     )
 
@@ -69,12 +69,12 @@ class Gate(Base):
         nullable=False,
     )
 
-    updated_user: Mapped[str] = mapped_column(
+    updated_user: Mapped[str | None] = mapped_column(
         String(12),
         nullable=True,
     )
 
-    updated_date: Mapped[datetime] = mapped_column(
+    updated_date: Mapped[datetime | None] = mapped_column(
         nullable=True,
     )
 

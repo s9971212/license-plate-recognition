@@ -1,7 +1,8 @@
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import BeforeValidator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from typing_extensions import Annotated
 
 # 專案根目錄
 BASE_DIR = Path(__file__).resolve().parents[2]
@@ -45,7 +46,14 @@ class Settings(BaseSettings):
     # Gate
     # =========================
 
-    gates: list[str] = Field(default_factory=list)
+    gates: Annotated[
+        list[str],
+        BeforeValidator(
+            lambda v: [x.strip() for x in v.split(",")]
+            if isinstance(v, str)
+            else v
+        )
+    ] = []
 
     # =========================
     # Reconnect Interval
