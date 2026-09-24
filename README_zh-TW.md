@@ -4,7 +4,7 @@
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![PyCharm](https://img.shields.io/badge/PyCharm-blue)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-blue)  
-![python-dotenv](https://img.shields.io/badge/python--dotenv-1.2.3-orange)
+![pydantic-settings](https://img.shields.io/badge/pydantic--settings-2.15.0-orange)
 ![opencv-python](https://img.shields.io/badge/opencv--python-5.0.0.93-orange)
 ![ultralytics](https://img.shields.io/badge/ultralytics-8.4.150-orange)
 ![paddleocr](https://img.shields.io/badge/paddleocr-3.7.0-orange)
